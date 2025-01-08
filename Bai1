@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Exemple Cafe Menu</h1>
+    <nav>
+        <ul>
+            <a href="">Starters |</a>
+            <a href="">Main Courses |</a>
+            <a href="">Desserts</a>
+        </ul>
+    </nav>
+    <h1>Starters</h1>
+    <nav>
+        <ul>
+            <li>Chestnut an Mushroom Goujons (v)</li>
+            <li>Goat Cheese Salad (v)</li>
+            <li>Honey Soy Chicken Kebabs</li>
+            <li>Seafood Salad</li>
+        </ul>
+    </nav>
+    <a href="">Back to top</a>
+    <h1>Main courses</h1>
+    <nav>
+        <ul>
+            <li>Spinach and Ricontta Roulade (v)</li>
+            <li>Beef Tournados with Mustard and Dill Sauce</li>
+            <li>Roast Chicken Salad</li>
+            <li>Icelandic Cod with Parsley Sauce</li>
+            <li>Mushroom Wellingtin (v)</li>
+        </ul>
+    </nav>
+    <a href="">Back to top</a>
+    <h1>Desserts</h1>
+    <nav>
+        <ul>
+            <li>Lemon Sorbet (v)</li>
+            <li>Chocolate Mud Pie (v)</li>
+            <li>Pecan Pie (v)</li>
+            <li>Selection of Fine Cheeses from Around the World</li>
+        </ul>
+    </nav>
+    <a href="">Back to top</a>
+
+    <div>Items marked with a (v) are suitable for vegetarians</div>
+
+
+
+
+
+</body>
+
+</html>
