@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .product-img {
+            height: 300px;
+            object-fit: cover;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 id="pageTitle">Danh sách sản phẩm</h1>
+
+        <div id="productDetail" class="row mt-4"></div>
+        <div id="productList" class="row mt-4"></div>
+    </div>
+
+    <script>
+        const products = [{
+            name: "Máy xay sinh tố",
+            price: 500000,
+            img: "../img/máy sây.png",
+            desc: "Máy xay sinh tố đa năng."
+        }, {
+            name: "Nồi cơm điện",
+            price: 800000,
+            img: "../img/nồi cơm.png",
+            desc: "Nồi cơm điện hiện đại, tiết kiệm điện."
+        }, {
+            name: "Lò vi sóng",
+            price: 1500000,
+            img: "../img/lò vi sóng.png",
+            desc: "Lò vi sóng đa chức năng."
+        }, {
+            name: "Bình đun siêu tốc",
+            price: 350000,
+            img: "../img/amsieutoc.png",
+            desc: "Bình đun siêu tốc 1.8L."
+        }, {
+            name: "Máy hút bụi",
+            price: 1200000,
+            img: "../img/máy hut biu.png",
+            desc: "Máy hút bụi công suất lớn."
+        }, {
+            name: "Quạt điều hòa",
+            price: 2000000,
+            img: "../img/quạtdieuhoa.png",
+            desc: "Làm mát hiệu quả với quạt điều hòa."
+        }, {
+            name: "Bàn ủi hơi nước",
+            price: 400000,
+            img: "../img/bàn ủi.png",
+            desc: "Bàn ủi hơi nước chống dính."
+        }, {
+            name: "Máy pha cà phê",
+            price: 1800000,
+            img: "../img/máy cf.png",
+            desc: "Pha cà phê tiện lợi tại nhà."
+        }, {
+            name: "Máy lọc không khí",
+            price: 2200000,
+            img: "../img/máy kk.png",
+            desc: "Lọc sạch không khí nhanh chóng."
+        }, {
+            name: "Nồi chiên không dầu",
+            price: 1700000,
+            img: "../img/noichien.png",
+            desc: "Nồi chiên không dầu tiết kiệm mỡ."
+        }];
+
+        const params = new URLSearchParams(window.location.search);
+        const id = parseInt(params.get("id"));
+        const productListContainer = document.getElementById("productList");
+        const productDetailContainer = document.getElementById("productDetail");
+        const pageTitle = document.getElementById("pageTitle");
+
+
+        if (id >= 0 && id < products.length) {
+            const product = products[id];
+            pageTitle.textContent = `Chi tiết sản phẩm: ${product.name}`;
+            productDetailContainer.innerHTML = `
+                <div class="col-md-6">
+                    <img src="${product.img}" alt="${product.name}" class="product-img rounded border">
+                </div>
+                <div class="col-md-6">
+                    <h4>${product.name}</h4>
+                    <p>${product.desc}</p>
+                    <p class="text-primary fw-bold">${product.price.toLocaleString()} VND</p>
+                    <button class="btn btn-success" onclick="addToCart(${id})">Thêm vào giỏ hàng</button>
+                    <br><br>
+                    <a href="product_detail.html" class="btn btn-secondary">Quay về danh sách sản phẩm</a> <!-- Nút quay về danh sách -->
+                </div>
+            `;
+            productListContainer.style.display = "none";
+        } else {
+
+            pageTitle.textContent = "Danh sách sản phẩm";
+            products.forEach((product, index) => {
+                const productCard = document.createElement("div");
+                productCard.classList.add("col-md-4", "mb-4");
+                productCard.innerHTML = `
+                    <div class="card">
+                        <img src="${product.img}" class="card-img-top" alt="${product.name}">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.name}</h5>
+                            <p class="card-text">${product.desc}</p>
+                            <p class="card-text"><strong>${product.price.toLocaleString()} VND</strong></p>
+                            <a href="?id=${index}" class="btn btn-outline-primary">Xem chi tiết</a>
+                        </div>
+                    </div>
+                `;
+                productListContainer.appendChild(productCard);
+            });
+            productDetailContainer.style.display = "none";
+
+            const goHomeBtn = document.createElement("a");
+            goHomeBtn.href = "index.html";
+            goHomeBtn.classList.add("btn", "btn-primary", "mt-3");
+            goHomeBtn.textContent = "Quay về Trang chủ";
+            document.body.appendChild(goHomeBtn);
+        }
+
+        function addToCart(productId) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const product = products[productId];
+            cart.push({
+                productName: product.name,
+                price: product.price
+            });
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert(`Đã thêm "${product.name}" vào giỏ hàng.`);
+        }
+    </script>
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

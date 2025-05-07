@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Chủ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="../img/logo.png" alt="Logo" width="40" class="me-2"> Đồ Gia Dụng
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html">Đăng ký</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Đăng nhập</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product_detail.html">Chi tiết SP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cart.html">Giỏ hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Giới thiệu</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span id="welcomeUser" class="text-white me-3 fw-bold" style="display: none;"></span>
+                    <button id="logoutBtn" class="btn btn-outline-light btn-sm" style="display: none;">Đăng xuất</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5 text-center">
+        <h1 class="mb-4">Chào mừng đến với Website Đồ Gia Dụng</h1>
+        <p class="lead">Khám phá những sản phẩm gia dụng tiện ích cho ngôi nhà của bạn.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center py-4 mt-5 border-top">
+        <p class="mb-0">&copy; 2025 Website Đồ Gia Dụng. All rights reserved.</p>
+    </footer>
+
+    <!-- Script -->
+    <script>
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        const username = localStorage.getItem("username");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const welcomeUser = document.getElementById("welcomeUser");
+
+        if (isLoggedIn === "true" && username) {
+            welcomeUser.textContent = `Xin chào, ${username}`;
+            welcomeUser.style.display = "inline-block";
+            logoutBtn.style.display = "inline-block";
+        }
+
+        logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("username");
+            alert("Bạn đã đăng xuất.");
+            window.location.href = "index.html";
+        });
+    </script>
+
+    <script src="../js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
