@@ -2,34 +2,35 @@
 <html lang="vi">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sản phẩm</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f1f1f1;
-            margin-top: 50px;
+            margin-top: 70px;
         }
         
-        .product-img {
+        .product-img,
+        .card-img-top {
             height: 300px;
             object-fit: cover;
             width: 100%;
+            border-radius: 10px;
             transition: transform 0.3s ease-in-out;
         }
         
-        .product-img:hover {
-            transform: scale(1.1);
+        .card:hover .card-img-top {
+            transform: scale(1.05);
         }
         
         .card {
             border: none;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
-            overflow: hidden;
         }
         
         .card-body {
@@ -84,14 +85,6 @@
             color: white;
         }
         
-        .card-img-top {
-            transition: transform 0.3s ease-in-out;
-        }
-        
-        .card:hover .card-img-top {
-            transform: scale(1.05);
-        }
-        
         .page-header {
             font-size: 2.5rem;
             font-weight: 600;
@@ -101,71 +94,50 @@
         }
         
         .navbar {
-            position: sticky;
+            position: fixed;
             top: 0;
+            width: 100%;
             z-index: 999;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: black;
         }
         
         .navbar a {
-            color: #333;
+            color: white !important;
+            font-weight: 500;
+            padding: 10px 20px;
         }
         
         .navbar a:hover {
-            color: #007bff;
-        }
-        
-        .product-img {
-            height: 300px;
-            width: 100%;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-        
-        .card-img-top {
-            height: 300px;
-            object-fit: cover;
-            width: 100%;
-            border-radius: 10px;
-        }
-        
-        nav {
-            background-color: black;
-            padding: 10px 0;
-        }
-        
-        nav a {
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        nav a:hover {
             background-color: #444;
-            color: #fff;
+            color: white !important;
         }
     </style>
 </head>
 
 <body>
+    <!-- Menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="index.html">Đồ Gia Dụng</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#">Website Đồ Gia Dụng</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
-            </ul>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product_detail.html">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cart.html">Giỏ hàng</a></li>
+                    <li class="nav-item" id="loginLink"><a class="nav-link" href="login.html">Đăng nhập</a></li>
+                    <li class="nav-item d-none" id="logoutLink"><a class="nav-link" href="#" onclick="logout()">Đăng xuất</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
+    <!-- Danh sách hoặc chi tiết sản phẩm -->
     <div class="container mt-5">
         <h1 id="pageTitle" class="page-header">Danh sách sản phẩm</h1>
-
         <div id="productDetail" class="row mt-4"></div>
         <div id="productList" class="row mt-4"></div>
     </div>
@@ -233,37 +205,37 @@
             const product = products[id];
             pageTitle.textContent = `Chi tiết sản phẩm: ${product.name}`;
             productDetailContainer.innerHTML = `
-                <div class="col-md-6">
-                    <div class="product-detail">
-                        <img src="${product.img}" alt="${product.name}" class="product-img rounded border">
-                        <h4>${product.name}</h4>
-                        <p>${product.desc}</p>
-                        <p class="text-primary fw-bold">${product.price.toLocaleString()} VND</p>
-                        <button class="btn btn-primary" onclick="addToCart(${id})">Thêm vào giỏ hàng</button>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <a href="product_detail.html" class="btn btn-secondary">Quay về danh sách sản phẩm</a> 
-                </div>
-            `;
+        <div class="col-md-6">
+          <div class="product-detail">
+            <img src="${product.img}" alt="${product.name}" class="product-img">
+            <h4>${product.name}</h4>
+            <p>${product.desc}</p>
+            <p class="text-primary fw-bold">${product.price.toLocaleString()} VND</p>
+            <button class="btn btn-primary" onclick="addToCart(${id})">Thêm vào giỏ hàng</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <a href="product_detail.html" class="btn btn-outline-primary mt-3">Quay về danh sách sản phẩm</a>
+        </div>
+      `;
             productListContainer.style.display = "none";
         } else {
             pageTitle.textContent = "Danh sách sản phẩm";
             products.forEach((product, index) => {
-                const productCard = document.createElement("div");
-                productCard.classList.add("col-md-4", "mb-4", "product-card");
-                productCard.innerHTML = `
-                    <div class="card">
-                        <img src="${product.img}" class="card-img-top" alt="${product.name}">
-                        <div class="card-body">
-                            <h5 class="card-title">${product.name}</h5>
-                            <p class="card-text">${product.desc}</p>
-                            <p class="card-text"><strong>${product.price.toLocaleString()} VND</strong></p>
-                            <a href="?id=${index}" class="btn btn-outline-primary">Xem chi tiết</a>
-                        </div>
-                    </div>
-                `;
-                productListContainer.appendChild(productCard);
+                const card = document.createElement("div");
+                card.className = "col-md-4 mb-4";
+                card.innerHTML = `
+          <div class="card">
+            <img src="${product.img}" class="card-img-top" alt="${product.name}">
+            <div class="card-body">
+              <h5 class="card-title">${product.name}</h5>
+              <p class="card-text">${product.desc}</p>
+              <p class="card-text fw-bold">${product.price.toLocaleString()} VND</p>
+              <a href="?id=${index}" class="btn btn-outline-primary">Xem chi tiết</a>
+            </div>
+          </div>
+        `;
+                productListContainer.appendChild(card);
             });
             productDetailContainer.style.display = "none";
         }
@@ -271,12 +243,33 @@
         function addToCart(productId) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             const product = products[productId];
-            cart.push({
-                productName: product.name,
-                price: product.price
-            });
+            const index = cart.findIndex(item => item.productName === product.name);
+            if (index >= 0) {
+                cart[index].quantity += 1;
+            } else {
+                cart.push({
+                    productName: product.name,
+                    price: product.price,
+                    quantity: 1
+                });
+            }
             localStorage.setItem("cart", JSON.stringify(cart));
             alert(`Đã thêm "${product.name}" vào giỏ hàng.`);
+        }
+
+        // Xử lý đăng nhập/đăng xuất
+        document.addEventListener("DOMContentLoaded", () => {
+            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+            document.getElementById("loginLink").classList.toggle("d-none", isLoggedIn);
+            document.getElementById("logoutLink").classList.toggle("d-none", !isLoggedIn);
+        });
+
+        function logout() {
+            if (confirm("Bạn có chắc muốn đăng xuất không?")) {
+                localStorage.removeItem("isLoggedIn");
+                localStorage.removeItem("currentUser");
+                window.location.href = "index.html";
+            }
         }
     </script>
 
