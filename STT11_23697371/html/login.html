@@ -16,7 +16,7 @@
         
         .container {
             max-width: 400px;
-            margin-top: 50px;
+            margin-top: 80px;
             background-color: #444;
             padding: 30px;
             border-radius: 8px;
@@ -56,10 +56,55 @@
         .btn-secondary:hover {
             background-color: #555;
         }
+        /* Navbar */
+        
+        .navbar {
+            background-color: #000000;
+        }
+        
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: #f9d342;
+        }
+        
+        #welcomeUser,
+        #logoutBtn {
+            color: #ffffff !important;
+        }
     </style>
 </head>
 
 <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="../img/logo.png" alt="Logo" width="40" class="me-2"> Đồ Gia Dụng
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html">Đăng ký</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Đăng nhập</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product_detail.html">Chi tiết SP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cart.html">Giỏ hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Giới thiệu</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span id="welcomeUser" class="text-dark me-3 fw-bold" style="display: none;"></span>
+                    <button id="logoutBtn" class="btn btn-outline-light btn-sm" style="display: none;">Đăng xuất</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Form -->
     <div class="container">
         <h2>Đăng Nhập</h2>
         <form id="loginForm">
@@ -80,6 +125,8 @@
             <a href="index.html" class="btn btn-secondary w-100">Quay Về Trang Chủ</a>
         </div>
     </div>
+
+    <!-- Script -->
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -97,6 +144,23 @@
                 alert("Tên người dùng hoặc mật khẩu không chính xác!");
             }
         });
+
+        window.onload = function() {
+            const isLoggedIn = localStorage.getItem("isLoggedIn");
+            const username = localStorage.getItem("username");
+
+            if (isLoggedIn === "true") {
+                document.getElementById("welcomeUser").textContent = `Xin chào, ${username}!`;
+                document.getElementById("welcomeUser").style.display = "inline";
+                document.getElementById("logoutBtn").style.display = "inline";
+            }
+
+            document.getElementById("logoutBtn").addEventListener("click", function() {
+                localStorage.setItem("isLoggedIn", "false");
+                localStorage.removeItem("username");
+                window.location.href = "index.html";
+            });
+        };
     </script>
     <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
