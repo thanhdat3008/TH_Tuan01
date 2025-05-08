@@ -7,7 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Custom Styles for Cart */
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Roboto', sans-serif;
+        }
         
         .cart-table th,
         .cart-table td {
@@ -27,14 +30,58 @@
             padding: 20px;
             border-radius: 8px;
         }
+        
+        .navbar {
+            background-color: #000000;
+        }
+        
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: #f9d342;
+        }
+        
+        #welcomeUser,
+        #logoutBtn {
+            color: #ffffff !important;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container mt-5">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="../img/logo.png" alt="Logo" width="40" class="me-2"> Đồ Gia Dụng
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html">Đăng ký</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Đăng nhập</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product_detail.html">Chi tiết SP</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="cart.html">Giỏ hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Giới thiệu</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span id="welcomeUser" class="text-white me-3 fw-bold" style="display: none;"></span>
+                    <button id="logoutBtn" class="btn btn-outline-light btn-sm" style="display: none;">Đăng xuất</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Content -->
+    <div class="container mt-5 mb-5">
         <h2 class="mb-4">Giỏ Hàng</h2>
         <div id="cartSection"></div>
-        <a href="index.html" class="btn btn-primary mt-4">Quay về Trang chủ</a>
+        <a href="index.html" class="btn btn-secondary mt-4">Quay về Trang chủ</a>
     </div>
 
     <script>
@@ -47,7 +94,6 @@
         const cartSection = document.getElementById("cartSection");
 
         function renderCart() {
-
             if (cart.length === 0) {
                 cartSection.innerHTML = `<p class="text-center text-muted">Giỏ hàng của bạn trống.</p>`;
                 return;
@@ -55,12 +101,14 @@
 
             let total = 0;
             let rows = cart.map((item, index) => {
-                total += item.price;
+                total += item.price * item.quantity;
                 return `
                     <tr>
                         <td>${item.productName}</td>
                         <td>${item.price.toLocaleString()} VND</td>
-                        <td>1</td>
+                        <td>
+                            <input type="number" value="${item.quantity}" min="1" class="form-control" style="width: 80px;" onchange="updateQuantity(${index}, this.value)">
+                        </td>
                         <td>
                             <button class="btn btn-sm btn-danger" onclick="removeItem(${index})">Xóa</button>
                         </td>
@@ -81,11 +129,33 @@
                     <tbody>${rows}</tbody>
                 </table>
 
-                <div class="checkout-section text-end">
+                <div class="checkout-section mt-4">
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Họ và tên</label>
+                        <input type="text" class="form-control" id="fullName" placeholder="Nhập họ tên">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="Nhập số điện thoại">
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Địa chỉ</label>
+                        <input type="text" class="form-control" id="address" placeholder="Nhập địa chỉ giao hàng">
+                    </div>
                     <p class="fw-bold fs-5">Tổng cộng: ${total.toLocaleString()} VND</p>
                     <button class="btn btn-success" onclick="checkout()">Thanh toán</button>
                 </div>
             `;
+        }
+
+        function updateQuantity(index, quantity) {
+            if (quantity < 1) {
+                alert("Số lượng không thể nhỏ hơn 1!");
+                return;
+            }
+            cart[index].quantity = parseInt(quantity);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            renderCart();
         }
 
         function removeItem(index) {
@@ -97,15 +167,41 @@
         }
 
         function checkout() {
-            if (cart.length === 0) {
-                alert("Giỏ hàng trống.");
+            const fullName = document.getElementById("fullName").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const address = document.getElementById("address").value.trim();
+
+            if (!fullName || !phone || !address) {
+                alert("Vui lòng điền đầy đủ Họ tên, Số điện thoại và Địa chỉ trước khi thanh toán.");
                 return;
             }
 
-            alert("Thanh toán thành công! Cảm ơn bạn đã mua sắm.");
+            if (!/^[0-9]{9,11}$/.test(phone)) {
+                alert("Số điện thoại không hợp lệ. Vui lòng nhập đúng định dạng.");
+                return;
+            }
+
+            alert(`Thanh toán thành công!\nCảm ơn bạn, ${fullName}.\nĐơn hàng sẽ được giao tới: ${address}`);
             localStorage.removeItem("cart");
             window.location.href = "index.html";
         }
+
+        window.onload = function() {
+            const isLoggedIn = localStorage.getItem("isLoggedIn");
+            const username = localStorage.getItem("username");
+
+            if (isLoggedIn === "true") {
+                document.getElementById("welcomeUser").textContent = `Xin chào, ${username}!`;
+                document.getElementById("welcomeUser").style.display = "inline";
+                document.getElementById("logoutBtn").style.display = "inline";
+            }
+
+            document.getElementById("logoutBtn").addEventListener("click", function() {
+                localStorage.setItem("isLoggedIn", "false");
+                localStorage.removeItem("username");
+                window.location.href = "index.html";
+            });
+        };
 
         renderCart();
     </script>
