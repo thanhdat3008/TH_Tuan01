@@ -102,7 +102,7 @@
             let total = 0;
             let rows = cart.map((item, index) => {
                 total += item.price * item.quantity;
-                return `
+                return ` 
                     <tr>
                         <td>${item.productName}</td>
                         <td>${item.price.toLocaleString()} VND</td>
@@ -142,6 +142,16 @@
                         <label for="address" class="form-label">Địa chỉ</label>
                         <input type="text" class="form-control" id="address" placeholder="Nhập địa chỉ giao hàng">
                     </div>
+                    
+                    <!-- Thêm lựa chọn phương thức thanh toán -->
+                    <div class="mb-3">
+                        <label for="paymentMethod" class="form-label">Phương thức thanh toán</label>
+                        <select class="form-select" id="paymentMethod">
+                            <option value="online">Thanh toán Online</option>
+                            <option value="cod">Khi nhận hàng</option>
+                        </select>
+                    </div>
+
                     <p class="fw-bold fs-5">Tổng cộng: ${total.toLocaleString()} VND</p>
                     <button class="btn btn-success" onclick="checkout()">Thanh toán</button>
                 </div>
@@ -170,6 +180,7 @@
             const fullName = document.getElementById("fullName").value.trim();
             const phone = document.getElementById("phone").value.trim();
             const address = document.getElementById("address").value.trim();
+            const paymentMethod = document.getElementById("paymentMethod").value;
 
             if (!fullName || !phone || !address) {
                 alert("Vui lòng điền đầy đủ Họ tên, Số điện thoại và Địa chỉ trước khi thanh toán.");
@@ -181,7 +192,9 @@
                 return;
             }
 
-            alert(`Thanh toán thành công!\nCảm ơn bạn, ${fullName}.\nĐơn hàng sẽ được giao tới: ${address}`);
+            const paymentText = paymentMethod === 'online' ? 'Thanh toán Online' : 'Thanh toán khi nhận hàng';
+
+            alert(`Thanh toán thành công!\nCảm ơn bạn, ${fullName}.\nĐơn hàng sẽ được giao tới: ${address}\nPhương thức thanh toán: ${paymentText}`);
             localStorage.removeItem("cart");
             window.location.href = "index.html";
         }
