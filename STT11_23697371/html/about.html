@@ -14,6 +14,23 @@
             color: white;
         }
         
+        nav {
+            background-color: black;
+            padding: 10px 0;
+        }
+        
+        nav a {
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        nav a:hover {
+            background-color: #444;
+            color: #fff;
+        }
+        
         .about-section {
             padding: 60px 0;
         }
@@ -74,6 +91,26 @@
 </head>
 
 <body>
+    <!-- Menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="index.html">Đồ Gia Dụng</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product_detail.html">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cart.html">Giỏ hàng</a></li>
+                    <li class="nav-item" id="loginLink"><a class="nav-link" href="login.html">Đăng nhập</a></li>
+                    <li class="nav-item d-none" id="logoutLink"><a class="nav-link" href="#" onclick="logout()">Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Giới thiệu -->
     <div class="container mt-5 about-section">
         <h2 class="text-center mb-4">Giới Thiệu Website</h2>
 
@@ -103,6 +140,23 @@
             <a href="index.html" class="btn btn-primary">Quay lại Trang Chủ</a>
         </div>
     </div>
+
+    <script>
+        // Hiển thị menu đăng nhập / đăng xuất
+        document.addEventListener("DOMContentLoaded", () => {
+            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+            document.getElementById("loginLink").classList.toggle("d-none", isLoggedIn);
+            document.getElementById("logoutLink").classList.toggle("d-none", !isLoggedIn);
+        });
+
+        function logout() {
+            if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+                localStorage.removeItem("isLoggedIn");
+                localStorage.removeItem("currentUser");
+                window.location.href = "index.html";
+            }
+        }
+    </script>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
