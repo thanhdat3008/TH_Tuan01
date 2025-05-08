@@ -114,13 +114,21 @@
         <p class="lead">Khám phá những sản phẩm gia dụng tiện ích cho ngôi nhà của bạn.</p>
     </div>
 
+    <!-- Sản phẩm nổi bật -->
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Sản phẩm nổi bật</h2>
+        <div class="row" id="featuredProducts">
+            <!-- Sản phẩm sẽ được thêm bằng JavaScript -->
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-light text-dark text-center py-5 mt-5 border-top">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <h5>Liên hệ</h5>
-                    <p>Email: support.hanhdat@gmail.com</p>
+                    <p>Email: support.thanhdat@gmail.com</p>
                     <p>Điện thoại: +84 123 456 789</p>
                     <p>Địa chỉ: 123 Đường ABC, Thành phố Gò Vấp, Việt Nam</p>
                 </div>
@@ -143,8 +151,9 @@
         </div>
     </footer>
 
-    <!-- Script to show login status and handle logout -->
+    <!-- Script -->
     <script>
+        // Kiểm tra đăng nhập
         window.onload = function() {
             const isLoggedIn = localStorage.getItem("isLoggedIn");
             const username = localStorage.getItem("username");
@@ -161,6 +170,43 @@
                 window.location.href = "index.html";
             });
         };
+
+        // Thêm sản phẩm nổi bật
+        const featuredProducts = [{
+            name: "Máy xay sinh tố",
+            price: 500000,
+            img: "../img/máy sây.png",
+            desc: "Xay nhuyễn thực phẩm nhanh chóng và tiện lợi."
+        }, {
+            name: "Nồi cơm điện",
+            price: 850000,
+            img: "../img/nồi cơm.png",
+            desc: "Giúp bạn nấu cơm nhanh, chín đều và tiết kiệm điện."
+        }, {
+            name: "Lò vi sóng",
+            price: 1500000,
+            img: "../img/lò vi sóng.png",
+            desc: "Hâm nóng, rã đông, nướng tiện lợi với nhiều chế độ."
+        }];
+
+        const container = document.getElementById("featuredProducts");
+
+        featuredProducts.forEach((product, index) => {
+            const col = document.createElement("div");
+            col.className = "col-md-4 mb-4";
+            col.innerHTML = `
+                <div class="card h-100 shadow-sm">
+                    <img src="${product.img}" class="card-img-top" alt="${product.name}" style="height: 250px; object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">${product.name}</h5>
+                        <p class="card-text">${product.desc}</p>
+                        <p class="text-primary fw-bold">${product.price.toLocaleString()} VND</p>
+                        <a href="product_detail.html?id=${index}" class="btn btn-outline-dark">Xem chi tiết</a>
+                    </div>
+                </div>
+            `;
+            container.appendChild(col);
+        });
     </script>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
