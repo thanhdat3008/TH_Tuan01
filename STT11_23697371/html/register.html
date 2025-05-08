@@ -16,7 +16,7 @@
         
         .container {
             max-width: 400px;
-            margin-top: 50px;
+            margin-top: 80px;
             background-color: #444;
             padding: 30px;
             border-radius: 8px;
@@ -56,20 +56,72 @@
         .btn-secondary:hover {
             background-color: #555;
         }
+        
+        .navbar {
+            background-color: #000000;
+        }
+        
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: #f9d342;
+        }
+        
+        #welcomeUser,
+        #logoutBtn {
+            color: #ffffff !important;
+        }
     </style>
 </head>
 
 <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="../img/logo.png" alt="Logo" width="40" class="me-2"> Đồ Gia Dụng
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html">Đăng ký</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Đăng nhập</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product_detail.html">Chi tiết SP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cart.html">Giỏ hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Giới thiệu</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span id="welcomeUser" class="text-dark me-3 fw-bold" style="display: none;"></span>
+                    <button id="logoutBtn" class="btn btn-outline-light btn-sm" style="display: none;">Đăng xuất</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Form -->
     <div class="container">
         <h2>Đăng Ký Tài Khoản</h2>
         <form id="registerForm">
             <div class="mb-3">
-                <label for="username" class="form-label">Tên người dùng</label>
-                <input type="text" class="form-control" id="username" required>
+                <label for="username" class="form-label">Tên người dùng (Email @gmail.com)</label>
+                <input type="email" class="form-control" id="username" required>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Mật khẩu</label>
-                <input type="password" class="form-control" id="password" required>
+                <label for="phone" class="form-label">Số điện thoại (10 chữ số, bắt đầu bằng 0)</label>
+                <input type="tel" class="form-control" id="phone" required pattern="^0[0-9]{9}$" placeholder="Ví dụ: 0123456789">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu (ít nhất 6 ký tự)</label>
+                <input type="password" class="form-control" id="password" required minlength="6">
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Nhập lại mật khẩu</label>
+                <input type="password" class="form-control" id="confirmPassword" required minlength="6">
             </div>
             <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
         </form>
@@ -80,19 +132,65 @@
             <a href="index.html" class="btn btn-secondary w-100">Quay Về Trang Chủ</a>
         </div>
     </div>
+
+    <!-- Scripts -->
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const username = document.getElementById('username').value;
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const phone = document.getElementById('phone').value.trim();
 
-            if (username && password) {
-                localStorage.setItem("username", username);
-                localStorage.setItem("password", password);
-                alert("Đăng ký thành công!");
-                window.location.href = "login.html";
+            // Kiểm tra định dạng email
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (!emailRegex.test(username)) {
+                alert("Tên người dùng phải là địa chỉ Gmail hợp lệ!");
+                return;
             }
+
+            // Kiểm tra độ dài mật khẩu
+            if (password.length < 6) {
+                alert("Mật khẩu phải có ít nhất 6 ký tự!");
+                return;
+            }
+
+            // Kiểm tra nhập lại mật khẩu
+            if (password !== confirmPassword) {
+                alert("Mật khẩu nhập lại không khớp!");
+                return;
+            }
+
+            // Kiểm tra số điện thoại
+            const phoneRegex = /^0[0-9]{9}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("Số điện thoại phải có 10 chữ số và bắt đầu bằng số 0!");
+                return;
+            }
+
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+            localStorage.setItem("phone", phone);
+            alert("Đăng ký thành công!");
+            window.location.href = "login.html";
         });
+
+        window.onload = function() {
+            const isLoggedIn = localStorage.getItem("isLoggedIn");
+            const username = localStorage.getItem("username");
+
+            if (isLoggedIn === "true") {
+                document.getElementById("welcomeUser").textContent = `Xin chào, ${username}!`;
+                document.getElementById("welcomeUser").style.display = "inline";
+                document.getElementById("logoutBtn").style.display = "inline";
+            }
+
+            document.getElementById("logoutBtn").addEventListener("click", function() {
+                localStorage.setItem("isLoggedIn", "false");
+                localStorage.removeItem("username");
+                window.location.href = "index.html";
+            });
+        };
     </script>
     <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
